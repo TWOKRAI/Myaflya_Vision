@@ -37,9 +37,11 @@ while True:
 
     #frame = cv2.bilateralFilter(frame, 9, 75, 75)
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    frame = cv2.inRange(hsv, hsv_min, hsv_max)
-    
-    cv2.imshow("frame", frame)
+    mask = cv2.inRange(hsv, hsv_min, hsv_max)
+    res = cv2.bitwise_and(frame, frame, mask = mask)
+    gray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
+
+    cv2.imshow("frame", res)
     
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
