@@ -16,18 +16,18 @@ cap = cv2.VideoCapture(0)
 #cap = cv2.VideoCapture('http://192.168.43.1:4747/video')
 
 cv2.createTrackbar('HL', 'frame', 11, 255, pass_func)
-cv2.createTrackbar('SL', 'frame', 73, 255, pass_func)
-cv2.createTrackbar('VL', 'frame', 173, 255, pass_func)
 cv2.createTrackbar('HM', 'frame', 23, 255, pass_func)
+cv2.createTrackbar('SL', 'frame', 73, 255, pass_func)
 cv2.createTrackbar('SM', 'frame', 255, 255, pass_func)
+cv2.createTrackbar('VL', 'frame', 173, 255, pass_func)
 cv2.createTrackbar('VM', 'frame', 255, 255, pass_func)
 
 while True:
     hl = cv2.getTrackbarPos('HL','frame')
-    sl = cv2.getTrackbarPos('SL','frame')
-    vl = cv2.getTrackbarPos('VL','frame')
     hm = cv2.getTrackbarPos('HM','frame')
+    sl = cv2.getTrackbarPos('SL','frame')
     sm = cv2.getTrackbarPos('SM','frame')
+    vl = cv2.getTrackbarPos('VL','frame')
     vm = cv2.getTrackbarPos('VM','frame')
     
     hsv_min = np.array((hl, sl, vl), np.uint8)
