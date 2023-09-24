@@ -47,12 +47,12 @@ cv2.createTrackbar("T2", 'frame', 255, 255, nothing)
 cv2.createTrackbar("Delta_X",'frame', 6000, 10000, nothing)
 cv2.createTrackbar('X', 'frame', 210, 640, nothing)
 
-cv2.createTrackbar('HL', 'track', 0, 255, nothing)
-cv2.createTrackbar('SL', 'track', 23, 255, nothing)
-cv2.createTrackbar('VL', 'track', 86, 255, nothing)
-cv2.createTrackbar('HM', 'track', 26, 255, nothing)
-cv2.createTrackbar('SM', 'track', 255, 255, nothing)
-cv2.createTrackbar('VM', 'track', 255, 255, nothing)
+cv2.createTrackbar('HL', 'setting', 11, 255, pass_func)
+cv2.createTrackbar('HM', 'setting', 30, 255, pass_func)
+cv2.createTrackbar('SL', 'setting', 66, 255, pass_func)
+cv2.createTrackbar('SM', 'setting', 255, 255, pass_func)
+cv2.createTrackbar('VL', 'setting', 173, 255, pass_func)
+cv2.createTrackbar('VM', 'setting', 255, 255, pass_func)
 
 
 while True:
