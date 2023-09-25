@@ -25,3 +25,4 @@ def predict():
 
 root = Tk()
 Button(text='predict', command = predict).place(x=10, y=10)
+input('Done\n')

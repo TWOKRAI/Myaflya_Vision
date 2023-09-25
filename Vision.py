@@ -13,7 +13,6 @@ if __name__ == '__main__':
 def pass_func(x):
    pass
 
-def random_defect
 
 buffer = []
 data = 'photo'
