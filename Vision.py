@@ -16,6 +16,7 @@ buffer = []
 data = 'photo'
 marker = 0
 i = 0
+n = 0
 
 robot_xmin = 318
 robot_xmax = 128
@@ -43,6 +44,7 @@ cv2.createTrackbar('param2', 'setting2', 2, 100, pass_func)
 cv2.createTrackbar('minRadius', 'setting2', 18, 100, pass_func)
 cv2.createTrackbar('maxRadius', 'setting2', 28, 200, pass_func)
 cv2.createTrackbar('photo', 'setting2', 0, 1, pass_func)
+
 #model = tf.keras.saving.load_model("myaphly_model_local.keras")
 
 """s = socket.socket()
@@ -78,8 +80,7 @@ while True:
         marker = 0
         cv2.imwrite(f'photo/main.png', frame)
         cv2.setTrackbarPos('photo', 'setting2', 1)
-       
-        data = 0
+        #data = 0
 
     frame = cv2.imread('photo/main.png')
 
@@ -89,12 +90,14 @@ while True:
     height_frame = cropped.shape[0]
     weight_frame = cropped.shape[1]
 
+    frame_gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+
     hsv = cv2.cvtColor(cropped, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, hsv_min, hsv_max)
     res = cv2.bitwise_and(cropped, cropped, mask = mask)
     gray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
     
-    circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT_ALT, (c_dp/100), c_minDist, c_param1, 
+    circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT_ALT, dp = (c_dp/100), minDist = c_minDist, param1 = c_param1, 
                             param2 = (c_param2/100), minRadius = c_minRadius, maxRadius = c_maxRadius)
 
     if circles is not None:
@@ -107,16 +110,24 @@ while True:
             cv2.circle(output, (x, y), r, (0, 255, 0), 4)
             cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
             
-            wcropp, hcropp = 28, 28
-            cropp = gray[int(y - hcropp/2): int(y + hcropp/2), int(x - wcropp/2): int(x + wcropp/2)]
+            wcropp, hcropp = 48, 48
+            cropp = frame_gray[int(y - hcropp/2): int(y + hcropp/2), int(x - wcropp/2): int(x + wcropp/2)]
+            
+            if  marker == 0:
+                n += 1
+                cv2.imwrite(f'Data_bad/{n}.png', cropp)
+            
             cropp = np.expand_dims(cropp, axis = 0)        
-                
+            
+           
+
             dx_transp = robot_xmin - int((robot_xmax - robot_xmin)/weight_frame*x)
             dy_transp = robot_ymin + int((robot_ymax - robot_ymin)/height_frame*y)
 
             #predict = model.predict(cropp)
             #print(predict)
             #predict = predict.reshape(2)
+
             predict = 1
             
             if predict >= 0.7:           
@@ -128,8 +139,7 @@ while True:
             print('НЕОТСОРТИРОВАННЫЙ:') 
             print(buffer) 
 
-            buffer.sort(key=lambda x: x[0], reverse = True)
-
+            buffer.sort(key = lambda x: x[0], reverse = True)
             print('ОТСОРТИРОВАННЫЙ:') 
             print(buffer) 
             print('Передача:') 
