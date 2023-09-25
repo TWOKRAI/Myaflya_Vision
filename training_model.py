@@ -16,6 +16,9 @@ train_images = cv2.cvtColor(train_images, cv2.COLOR_BGR2GRAY)
 train_images = np.expand_dims(train_images, axis=0)
 print(train_images.shape)
 
+weight = train_images.shape[0]
+height = train_images.shape[1]
+
 
 for i in os.listdir(path1):
     img = cv2.imread(f'{path1}/{i}')
@@ -38,15 +41,14 @@ print(train_images.shape)
 train_labels = np.array(train_labels)
 print(train_labels.shape)
 
-train_images = train_images.reshape((3238, 48, 48, 1))
+train_images = train_images.reshape((len(train_images), weight, height, 1))
 train_images = train_images.astype('float32') / 255
 train_labels = to_categorical(train_labels)
 print(train_images.shape, train_labels.shape)
 
 model = models.Sequential()
 
-model.add(layers.Conv2D(32, (3, 3), activation='relu',
-                        input_shape=(48, 48, 1)))
+model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(weight, height, 1)))
 model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 model.add(layers.MaxPooling2D((2, 2)))
@@ -58,11 +60,9 @@ model.add(layers.Dense(2, activation='softmax'))
 model.summary()
 
 model.compile(optimizer='rmsprop',
-              loss='categorical_crossentropy',
-              metrics=['accuracy'])
+            loss='categorical_crossentropy',
+            metrics=['accuracy'])
 model.fit(train_images, train_labels, epochs=10, batch_size=20)
-
-#model.evaluate(test_images, test_labels)
 
 model.save('myaphly_model_local.keras')
 input('Done\n')

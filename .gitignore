@@ -4,3 +4,5 @@
 Data_good/ 
 Data_bad/
 test_images/
+
+myaphly_model_local.keras
