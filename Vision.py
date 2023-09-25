@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import socket
+import random
 #from keras import models
 #import tensorflow as tf
 
@@ -11,6 +12,8 @@ if __name__ == '__main__':
 
 def pass_func(x):
    pass
+
+def random_defect
 
 buffer = []
 data = 'photo'
@@ -90,7 +93,7 @@ while True:
     height_frame = cropped.shape[0]
     weight_frame = cropped.shape[1]
 
-    frame_gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+    frame_gray = cv2.cvtColor(output, cv2.COLOR_BGR2GRAY)
 
     hsv = cv2.cvtColor(cropped, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, hsv_min, hsv_max)
@@ -105,17 +108,38 @@ while True:
 
         for (x, y, r) in circles:
 
-            i += 1
-            cv2.putText(output, str(i), (x-5, y - 10), cv2.FONT_ITALIC, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
-            cv2.circle(output, (x, y), r, (0, 255, 0), 4)
-            cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
+            myseq = ['O', '|', 'L', 'Q', 'D', 'C']
+            defect = random.choice(myseq)
+            deltax = random.randint(-8, 8)
+            deltay = random.randint(-8, 8)
+            size = 1 / (random.randint(2, 4))
+            color = random.randint(25, 75)
+            line1 = random.randint(2, 5)
+            line2 = random.randint(1, 2)
+            rand1 = random.randint(0, 1)
+            rand2 = random.randint(0, 1)
+
+            if rand1 == 0 and rand2 == 0:
+               rand1 = 1
+               rand2 = 0
+
+            if rand1 == 1:
+               cv2.putText(frame_gray, str(defect), (x-deltax, y - deltay), cv2.FONT_ITALIC, size, (color, color, color), line1, cv2.LINE_AA)
+            
+            if rand2 == 1:
+               cv2.circle(frame_gray, (x, y), r, (color, color, color), line2)
+
+            #i += 1
+            #cv2.putText(output, str(i), (x-5, y - 10), cv2.FONT_ITALIC, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
+            #cv2.circle(output, (x, y), r, (0, 255, 0), 4)
+            #cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
             
             wcropp, hcropp = 48, 48
             cropp = frame_gray[int(y - hcropp/2): int(y + hcropp/2), int(x - wcropp/2): int(x + wcropp/2)]
             
             if  marker == 0:
                 n += 1
-                cv2.imwrite(f'Data/{n}.png', cropp)
+                cv2.imwrite(f'Data_bad/{n}.png', cropp)
             
             cropp = np.expand_dims(cropp, axis = 0)        
             
