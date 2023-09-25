@@ -115,12 +115,10 @@ while True:
             
             if  marker == 0:
                 n += 1
-                cv2.imwrite(f'Data_bad/{n}.png', cropp)
+                cv2.imwrite(f'Data/{n}.png', cropp)
             
             cropp = np.expand_dims(cropp, axis = 0)        
             
-           
-
             dx_transp = robot_xmin - int((robot_xmax - robot_xmin)/weight_frame*x)
             dy_transp = robot_ymin + int((robot_ymax - robot_ymin)/height_frame*y)
 
